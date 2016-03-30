@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.emc.ecs:smart-client:2.0.7">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.emc.ecs/smart-client/2.0.7/f53ffcdd1abc6f4ebd484451c8fa603d872c2586/smart-client-2.0.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.emc.ecs/smart-client/2.0.7/7e7461de49f8266435e1f4ce6388dc11b9e005b8/smart-client-2.0.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
