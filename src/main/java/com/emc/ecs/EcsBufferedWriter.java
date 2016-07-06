@@ -15,27 +15,17 @@
 
 package com.emc.ecs;
 
-import com.emc.ecs.s3.sample.ECSS3Factory;
-import com.emc.object.Protocol;
-import com.emc.object.Range;
+import com.emc.ecs.util.OptionBuilder;
 import com.emc.object.s3.S3Client;
-
-import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import com.emc.object.s3.S3Config;
 import com.emc.object.s3.jersey.S3JerseyClient;
-import com.emc.rest.smart.ecs.Vdc;
-import com.emc.ecs.util.OptionBuilder;
-import org.apache.commons.cli.*;
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.apache.log4j.Logger;
+
+import java.net.URI;
 
 /**
  * Created by conerj on 3/15/16.
@@ -86,17 +76,6 @@ public class EcsBufferedWriter {
     public static final String TAILBYTE_COMMAND = "tailbyte";
     public static final String TAIL_COMMAND = "tail";
 
-
-
-    public void EcsBufferedWriter() {
-        try {
-            System.out.println("creating the s3 client");
-            s3 = ECSS3Factory.getS3Client();
-        }
-        catch(Exception e) {
-            System.out.println("Exception instantiating the S3Client");
-        }
-    }
 
 
     protected static Options options() {

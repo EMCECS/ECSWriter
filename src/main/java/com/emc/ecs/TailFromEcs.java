@@ -16,21 +16,16 @@
 
 package com.emc.ecs;
 
-import com.emc.ecs.s3.sample.ECSS3Factory;
 import com.emc.object.Range;
 import com.emc.object.s3.S3Client;
-import com.emc.object.s3.S3ObjectMetadata;
-import com.emc.object.s3.bean.GetObjectResult;
 import com.emc.object.s3.bean.ListObjectsResult;
 import com.emc.object.s3.bean.S3Object;
-import com.emc.object.s3.request.GetObjectRequest;
 import com.emc.object.s3.request.ListObjectsRequest;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
 import java.util.List;
 
 /**
@@ -66,7 +61,7 @@ public class TailFromEcs implements Runnable {
         //Range range = new Range((long) offset, (long) offset + EcsBufferedWriter.BUFFER_SIZE);
         Range range = Range.fromOffsetLength(offset, EcsBufferedWriter.BUFFER_SIZE);
         if (this.getObjectListResult() < offset + EcsBufferedWriter.BUFFER_SIZE) {
-            System.err.println("JMC changing up the range");
+            //System.err.println("JMC changing up the range");
             range = Range.fromOffset(offset);
         }
 
@@ -121,7 +116,7 @@ public class TailFromEcs implements Runnable {
         int tmpBytesRead = 0;
         int bytesRead = 0;
         byte[] content = new byte[EcsBufferedWriter.BUFFER_SIZE];
-        System.err.println("JMC creating range with offset: " + offset);
+        //System.err.println("JMC creating range with offset: " + offset);
         objectSize = this.getObjectListResult();
         if (objectSize <= offset) {
             return 0;
@@ -130,7 +125,7 @@ public class TailFromEcs implements Runnable {
 
         Range range = Range.fromOffsetLength(offset, EcsBufferedWriter.BUFFER_SIZE);
         if (objectSize < offset + EcsBufferedWriter.BUFFER_SIZE) {
-            System.err.println("JMC changing up the range: " + (objectSize - offset));
+            //System.err.println("JMC changing up the range: " + (objectSize - offset));
             //range = Range.fromOffset(offset);
             range = Range.fromOffsetLength(offset, objectSize - offset);
         }
@@ -142,7 +137,7 @@ public class TailFromEcs implements Runnable {
         //while((tmpContent = br.read()) != -1) {
         while((tmpBytesRead = br.read(content)) != -1) {
             bytesRead += tmpBytesRead;
-            System.err.println("JMC number of bytesRead: " + bytesRead);
+            //System.err.println("JMC number of bytesRead: " + bytesRead);
             //System.out.print(new String(content, "US-ASCII"));
             System.out.print(new String(content, 0, tmpBytesRead, "US-ASCII"));
             //System.out.print(new String(content, "UTF-8"));
@@ -170,7 +165,7 @@ public class TailFromEcs implements Runnable {
                     bytesRead = tailRange(offset);
                     //if an exception was thrown, then this buffer increment line won't be hit
                     //offset += EcsBufferedWriter.BUFFER_SIZE;
-                    System.err.println("JMC returned number of bytesRead: " + bytesRead);
+                    //System.err.println("JMC returned number of bytesRead: " + bytesRead);
                     offset += bytesRead;
                 }
                 catch(Exception e) {

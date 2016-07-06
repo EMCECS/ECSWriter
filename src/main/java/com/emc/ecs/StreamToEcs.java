@@ -16,7 +16,6 @@
 
 package com.emc.ecs;
 
-import com.emc.ecs.s3.sample.ECSS3Factory;
 import com.emc.object.Range;
 import com.emc.object.s3.S3Client;
 import com.emc.object.s3.bean.ListObjectsResult;
