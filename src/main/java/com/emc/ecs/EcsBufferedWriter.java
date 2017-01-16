@@ -16,6 +16,7 @@
 package com.emc.ecs;
 
 import com.emc.ecs.s3.sample.ECSS3Factory;
+import com.emc.object.ObjectConfig;
 import com.emc.object.Protocol;
 import com.emc.object.Range;
 import com.emc.object.s3.S3Client;
@@ -207,7 +208,8 @@ public class EcsBufferedWriter {
             s3Config.withNamespace(ns);
         }
         l4j.debug(s3Config);
-        
+        //s3Config.setSmartClient(false); //JMC
+        //s3Config.setProperty(ObjectConfig.PROPERTY_PROXY_URI, "localhost:8888"); //JMC
         S3Client s3Client = new S3JerseyClient(s3Config);
         String bucket = line.getOptionValue(BUCKET_OPTION);
         // figure out file/key name

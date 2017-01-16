@@ -78,7 +78,7 @@ public class StreamToEcs implements Runnable  {
                         //currentAppendOffset is the offset where the append started
                         //which should be the same as the managedOffset before it's updated from this write
                         //this managedOffset is reset each time there's a mismatch
-                        if (currentAppendOffset != managedOffset) {
+                        if ((currentAppendOffset != managedOffset) && (loopCnt > 0)) {
                             System.err.println("Offsets are not the same. Could be another writer to this file");
                             managedOffset = currentAppendOffset + contentStr.length();
                         }
@@ -112,11 +112,13 @@ public class StreamToEcs implements Runnable  {
         boolean retry = true;
         while (retry) {
             try {
+                System.err.println("Entered putObjectWithRetry range: " + range.getFirst() + " - " + range.getLast());
                 this.s3Client.putObject(this.bucket, this.key, range, (Object) content);
                 System.err.println("putObject is done........................");
                 retry = false;
             }
             catch(Exception e) {
+                e.printStackTrace();
                 System.err.println("putObjectWithRetry needs to retry");
             }
         }
@@ -132,7 +134,8 @@ public class StreamToEcs implements Runnable  {
             }
 
             System.err.println("Creating object: " + this.key);
-            this.s3Client.putObject(this.bucket, this.key, "", null);
+            //this.s3Client.putObject(this.bucket, this.key, "blah2", null);
+            this.s3Client.putObject(this.bucket, this.key, new byte[0], null);
             System.err.println("Just did the initial putObject...");
 
             byte[] content = new byte[EcsBufferedWriter.BUFFER_SIZE];
@@ -146,12 +149,11 @@ public class StreamToEcs implements Runnable  {
                 while((bytesRead = br.read(content,0, EcsBufferedWriter.BUFFER_SIZE)) != -1) {
                     //offset in ecs object and length to write
                     if (bytesRead > 0) {
-                        String tmpStr = new String(content, 0, bytesRead);
                         Range range = Range.fromOffsetLength(objectOffset, bytesRead);
                         System.err.println("Going to putObject...");
-                        //System.out.println(new String(content, 0, bytesRead));
 
-                        putObjectWithRetry(tmpStr.getBytes(), range);
+                        //putObjectWithRetry(tmpStr.getBytes(), range);
+                        putObjectWithRetry(content, range);
 
                         System.err.println("returned from putObjectWithRetry........................");
                         objectOffset += bytesRead;

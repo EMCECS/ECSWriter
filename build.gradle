@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.emc.ecs:object-client:2.1.1',
+    compile 'com.emc.ecs:object-client:3.0.0',
             'com.sun.jersey:jersey-core:1.19',
             'commons-cli:commons-cli:1.2',
             'log4j:log4j:1.2.16'
